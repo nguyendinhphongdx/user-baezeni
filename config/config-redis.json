@@ -1,0 +1,4 @@
+{
+    "url": "localhost:6379",
+    "expiresRedis": 60
+}
