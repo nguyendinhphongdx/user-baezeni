@@ -1,5 +1,7 @@
 const express = require('express');
+const utils = require('../../utils');
 const userService = require('../services/userService');
+const RedisService = require('../../redis');
 const router = express.Router();
 
 router.post("/api/sign-in", async (req, res) => {
@@ -44,9 +46,14 @@ router.post("/api/sign-up", async (req, res) => {
 });
 
 
-router.get("/api/users", async (req, res) => {
+router.get("/api/users", utils.checkCacheApi, async (req, res) => {
     try {
         const data = (await userService.getAll()).map(user => ({ ...user.dataValues, password: "****" }));
+        
+        RedisService.setRedis(req.originalUrl, {
+            users: data
+        });
+
         res.json({
             users: data
         })
@@ -91,5 +98,14 @@ router.get("/views/users", async (req, res) => {
     }
 });
 
+router.get("/views/home", async (req, res) => {
+    try {
+        res.sendFile(process.cwd() + "/views/home.html");
+    } catch (error) {
+        res.status(400).json({
+            message: error.message
+        })
+    }
+});
 
 module.exports = router;

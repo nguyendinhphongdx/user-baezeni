@@ -14,7 +14,6 @@ class RedisService {
             .catch((error) => console.log("Redis Client Error", error));
     }
     setRedis(key, value, seconds) {
-        console.log(key, value);
         // 1 minutes expired
         redisClient.setEx(
             key,

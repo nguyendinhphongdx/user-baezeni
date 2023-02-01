@@ -4,3 +4,7 @@ function launch_toast(message) {
     x.className = "show";
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 }
+
+function logout(){
+    location.replace("/center-user/views/login");
+}

@@ -7,7 +7,10 @@ const router = require('./src/routers');
 const { connectSQLite } = require('./database');
 const userService = require('./src/services/userService');
 const RedisService = require('./redis');
+const { getConfig } = require('./config');
 env.config({ path: process.cwd() + '/.env' });
+
+const config = getConfig('app');
 
 const app = express();
 
@@ -28,16 +31,16 @@ app.use(cors(corsOptions));
 
 
 
-app.use('/center-user', router);
+app.use(`/${config.subDomain}`, router);
 
 app.use('/', (req, res) => {
     res.redirect('/center-user/views/login');
 })
 
-app.listen(3000, async () => {
+app.listen(config.port, async () => {
     console.log("Server is running on port: ", 3000);
     await connectSQLite();
     await userService.init();
     await RedisService.initRedis();
-  
+
 });

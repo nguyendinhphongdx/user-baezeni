@@ -34,8 +34,35 @@ async function showThankYou() {
             password
         })
         prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
+        await new Promise(r => setTimeout(r, 1000));
+        if (loginStatus?.data?.role === 'user') {
+            location.replace("/center-user/views/home");
+        } else {
+            location.replace("/center-user/views/users");
+        }
     } catch (error) {
-        if(error?.response?.data?.message){
+        if (error?.response?.data?.message) {
+            error.message = error.response?.data?.message;
+        }
+        launch_toast(error.message);
+    }
+}
+
+async function signUp() {
+    try {
+        const email = document.getElementById("emailSignup").value;
+        const password = document.getElementById("passwordSignup").value;
+        const passwordCF = document.getElementById("passwordConfirm").value;
+        if (password !== passwordCF) throw new Error("password is not match");
+        const signUp = await axios.post("/center-user/api/sign-up", {
+            email,
+            password
+        })
+        prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
+        await new Promise(r => setTimeout(r, 1000));
+        location.reload();
+    } catch (error) {
+        if (error?.response?.data?.message) {
             error.message = error.response?.data?.message;
         }
         launch_toast(error.message);

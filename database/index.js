@@ -1,9 +1,11 @@
 const { Sequelize } = require("sequelize");
 const SQLite = require("sqlite3");
+const { getConfig } = require('../config');
+const config = getConfig('sqlite');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'data/database.sqlite'
+    storage: config.storage
 });
 
 async function connectSQLite() {
