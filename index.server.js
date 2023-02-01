@@ -26,7 +26,14 @@ const corsOptions = {
 app.use(express.static('views'))
 app.use(cors(corsOptions));
 
+
+
 app.use('/center-user', router);
+
+app.use('/', (req, res) => {
+    res.redirect('/center-user/views/login');
+})
+
 app.listen(3000, async () => {
     console.log("Server is running on port: ", 3000);
     await connectSQLite();

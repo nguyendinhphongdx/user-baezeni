@@ -12,6 +12,8 @@ class UserService {
     }
     changeStatus = async (userId) => {
         const user = await User.findOne({ where: { id: userId } });
+        if(!user) throw new Error("User not found");
+        if(user && user.role === "admin") throw new Error("Permission user");
         await user.update({ active: !user.dataValues.active });
     }
     init = async () => {
